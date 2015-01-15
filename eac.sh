@@ -8,6 +8,7 @@ if [ -f "$1" ]; then
         *.rar)      unrar x "$1" ;;
         *.7z)       7z x "$1" ;;
         *.gz)       gzip -dk "$1" ;;
+        *.xz)       xz -dk "$1" ;;
         *)          echo "Not able to extract $1" ;;
     esac
 fi
