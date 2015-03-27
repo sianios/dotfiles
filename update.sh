@@ -3,9 +3,11 @@ menu="1 - Update
 2 - Upgrade
 3 - Dist-Upgrade
 L - List Available Upgrades
+F - Update Pepper Flash
 Q - Exit"
 
 while true; do
+    clear
     echo "$menu"
     echo -n "Enter option: "
     read option
@@ -14,6 +16,7 @@ while true; do
         2) sudo apt-get upgrade ;;
         3) sudo apt-get dist-upgrade ;;
         l|L) apt list --upgradable ;;
+        f|F) sudo update-pepperflashplugin-nonfree --install ;;
         q|Q) exit 0 ;;
         *) echo "Wrong Option..."
             sleep 2 ;;
