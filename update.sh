@@ -15,7 +15,8 @@ while true; do
         1) sudo apt-get update ;;
         2) sudo apt-get upgrade ;;
         3) sudo apt-get dist-upgrade ;;
-        l|L) apt list --upgradable ;;
+        l|L) apt list --upgradable 
+            read -p "Press any key to continue" ;;
         f|F) sudo update-pepperflashplugin-nonfree --install ;;
         q|Q) exit 0 ;;
         *) echo "Wrong Option..."
