@@ -4,6 +4,7 @@ menu="1 - Update
 3 - Dist-Upgrade
 L - List Available Upgrades
 F - Update Pepper Flash
+V - View apt logs
 Q - Exit"
 
 while true; do
@@ -18,6 +19,7 @@ while true; do
         l|L) apt list --upgradable 
             read -p "Press any key to continue" ;;
         f|F) sudo update-pepperflashplugin-nonfree --install ;;
+        v|V) \less -N /var/log/apt/history.log ;;
         q|Q) exit 0 ;;
         *) echo "Wrong Option..."
             sleep 2 ;;
