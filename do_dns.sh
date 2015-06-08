@@ -15,4 +15,4 @@ fi
 echo $ip
 curl -X PUT -H "Content-Type: application/json" \
 -H "Authorization: Bearer $api_key" -d '{"data":"'"$ip"'"}' \
-"https://api.digitalocean.com/v2/domains/$domain/records/$record"
+"https://api.digitalocean.com/v2/domains/$domain/records/$record" >> /dev/null
