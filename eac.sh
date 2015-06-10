@@ -1,15 +1,22 @@
 #!/bin/bash
-# Extracts the following
-if [ -f "$1" ]; then
-    case "$1" in
-        *.tar.gz)   tar xzvf "$1" ;;
-        *.tar.bz2)  tar xvjf "$1" ;;
-        *.tar.xz)   tar xvJf "$1" ;;
-        *.zip)      unzip "$1" ;;
-        *.rar)      unrar x "$1" ;;
-        *.7z)       7z x "$1" ;;
-        *.gz)       gzip -dk "$1" ;;
-        *.xz)       xz -dk "$1" ;;
-        *)          echo "Not able to extract $1" ;;
-    esac
-fi
+# Simple script to extract compressed files and compress files to
+# .tar.gz files
+case "$1" in
+    -c|-C) tar -cvzf "$2".tar.gz $@ || echo "$@ not found" ;;
+    -e|-E) if [ -f "$2" ]; then
+        case "$2" in
+            *.tar.gz)   tar xzvf "$2" ;;
+            *.tar.bz2)  tar xvjf "$2" ;;
+            *.tar.xz)   tar xvJf "$2" ;;
+            *.zip)      unzip "$2" ;;
+            *.rar)      unrar x "$2" ;;
+            *.7z)       7z x "$2" ;;
+            *.gz)       gzip -dk "$2" ;;
+            *.xz)       xz -dk "$2" ;;
+            *)          echo "Not able to extract $2" ;;
+        esac
+        else
+            echo "File not found"
+        fi ;;
+    *) echo -e "Usage [option] file\nOptions:\n-c Compress\n-e Extract" ;;
+esac
