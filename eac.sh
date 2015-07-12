@@ -2,7 +2,7 @@
 # Simple script to extract compressed files and compress files to
 # .tar.gz files
 case "$1" in
-    -c|-C) tar -cvzf "$2".tar.gz $@ || echo "$@ not found" ;;
+    -c|-C) tar cvzf "${2%%/}.tar.gz" "${2%%/}/";;
     -e|-E) if [ -f "$2" ]; then
         case "$2" in
             *.tar.gz)   tar xzvf "$2" ;;
