@@ -8,6 +8,7 @@ case "$1" in
             *.tar.gz)   tar xzvf "$2" ;;
             *.tar.bz2)  tar xvjf "$2" ;;
             *.tar.xz)   tar xvJf "$2" ;;
+            *.tar)      tar xvf "$2" ;;
             *.zip)      unzip "$2" ;;
             *.rar)      unrar x "$2" ;;
             *.7z)       7z x "$2" ;;
