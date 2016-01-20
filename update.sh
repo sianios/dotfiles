@@ -6,8 +6,9 @@ L - List Available Upgrades
 F - Update Pepper Flash
 A - apt Autoremove
 O - Remove Obsolete Packages
+D - Purge Packages using deborphan
 C - apt Clean
-V - View apt logs
+V - apt-get history log
 Q - Exit"
 
 while true; do
@@ -24,6 +25,7 @@ while true; do
         f|F) sudo update-pepperflashplugin-nonfree --install ;;
         a|A) sudo apt-get autoremove ;;
         o|O) sudo aptitude purge ~o ;;
+        d|D) sudo apt-get purge $(deborphan) ;; #deborphan package must be installed
         c|C) sudo apt-get clean ;;
         v|V) \less -N /var/log/apt/history.log ;;
         q|Q) exit 0 ;;
