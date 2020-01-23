@@ -1,4 +1,20 @@
 #!/bin/bash
+
+# Script to maintain Debian system and update
+# Version: 0.3
+
+sources() {
+    clear
+    ls /etc/apt/sources.list.d
+
+    echo -en "\nEnter file name to edit. If none selected sources.list will be edited.\nFile name: "
+    read filename
+
+    # edit-sources is still in development
+    sudo apt edit-sources $filename
+}
+
+
 menu="1 - Update
 2 - Upgrade
 3 - Dist-Upgrade
@@ -7,7 +23,8 @@ A - apt Autoremove
 O - Remove Obsolete Packages
 D - Purge Packages using deborphan
 C - apt Clean
-V - apt-get history log
+V - apt history log
+E - Edit source.list files
 Q - Exit"
 
 while true; do
@@ -16,18 +33,17 @@ while true; do
     echo -n "Enter option: "
     read option
     case $option in
-        1) sudo apt-get update ;;
-        2) sudo apt-get upgrade -V ;;
-        3) sudo apt-get dist-upgrade ;;
+        1) sudo apt update ;;
+        2) sudo apt upgrade -V ;;
+        3) sudo apt dist-upgrade ;;
         l|L) apt list --upgradable 
             read -p "Press any key to continue" ;;
-#        f|F) sudo update-pepperflashplugin-nonfree --install ;;
-#        #Package was removed in Debian 9 so this is useless
-        a|A) sudo apt-get autoremove ;;
+        a|A) sudo apt autoremove --purge ;;
         o|O) sudo aptitude purge ~o ;;
-        d|D) sudo apt-get purge $(deborphan) ;; #deborphan package must be installed
-        c|C) sudo apt-get clean ;;
-        v|V) \less -N /var/log/apt/history.log ;;
+        d|D) sudo apt purge $(deborphan) ;; #deborphan package must be installed
+        c|C) sudo apt clean ;;
+        v|V) less /var/log/apt/history.log ;;
+        e|E) sources ;;
         q|Q) exit 0 ;;
         *) echo "Wrong Option..."
             sleep 2 ;;
