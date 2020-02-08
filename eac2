@@ -1,0 +1,21 @@
+#!/bin/bash
+#################################
+# eac2 is in developemnt to implement encryption
+#################################
+
+# Functions
+
+# Check if openssl is installed
+openssl_check() {
+    # Redirect error and output to /dev/null
+    SSL=$(which openssl) > /dev/null 2>&1
+    if [ -z ${SSL} ]; then
+        echo "openssl not found"
+        exit 1
+    fi
+}
+
+openssl_check
+
+# something random
+echo ${SSL}
