@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to maintain Debian system and update
+# Script to semi automate system update on Debian based distros
 # Version: 0.3
 
 sources() {
@@ -10,10 +10,21 @@ sources() {
     echo -en "\nEnter file name to edit. If none selected sources.list will be edited.\nFile name: "
     read filename
 
-    # edit-sources is still in development
+    # edit-sources using default system editor
     sudo apt edit-sources $filename
 }
 
+help_() {
+    clear
+    echo -e "Description:\nA script to semi automate the update procedure on Debian based distributions."
+    echo
+    echo -e "Usage:\nSelect an option from the menu provided. Both lower and capital letters work."
+    echo
+    echo "$menu"
+    read -p "Press Enter to continue"
+}
+
+_LESS=$(which less)
 
 menu="1 - Update
 2 - Upgrade
@@ -25,6 +36,7 @@ D - Purge Packages using deborphan
 C - apt Clean
 V - apt history log
 E - Edit source.list files
+H - Info and help
 Q - Exit"
 
 while true; do
@@ -37,15 +49,16 @@ while true; do
         2) sudo apt upgrade -V ;;
         3) sudo apt dist-upgrade ;;
         l|L) apt list --upgradable 
-            read -p "Press any key to continue" ;;
+            read -p "Press Enter to continue" ;;
         a|A) sudo apt autoremove --purge ;;
         o|O) sudo aptitude purge ~o ;;
         d|D) sudo apt purge $(deborphan) ;; #deborphan package must be installed
         c|C) sudo apt clean ;;
-        v|V) less /var/log/apt/history.log ;;
+        v|V) ${_LESS} /var/log/apt/history.log ;;
         e|E) sources ;;
+        h|H) help_ ;;
         q|Q) exit 0 ;;
-        *) echo "Wrong Option..."
+        ?*) echo "Error: $option option is not valid. Try again.."
             sleep 2 ;;
     esac
 done
