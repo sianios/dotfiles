@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Script to semi automate system update on Debian based distros
-# Version: 0.3
+# A script to semi automate the packages update procedure and cleanup on Debian based
+# distributions using the **apt** package manager and other packages.
+# Version: 0.4
 
 sources() {
     clear
@@ -12,25 +13,25 @@ sources() {
 
     # edit-sources using default system editor
     sudo apt edit-sources $filename
+    sudo apt update
 }
 
 help_() {
-    clear
-    echo -e "Description:\nA script to semi automate the update procedure on Debian based distributions."
-    echo
-    echo -e "Usage:\nSelect an option from the menu provided. Both lower and capital letters work."
-    echo
-    echo "$menu"
+    # launch default browser to view help file on github
+    sensible-browser https://github.com/sianios/dotfiles/blob/master/update.md &
+
     read -p "Press Enter to continue"
 }
 
 _LESS=$(which less)
+_DEBORPHAN=$(which deborphan)
+_APTITUDE=$(which aptitude)
 
 menu="1 - Update
 2 - Upgrade
-3 - Dist-Upgrade
+3 - Full-Upgrade
 L - List Available Upgrades
-A - apt Autoremove
+A - Autoremove
 O - Remove Obsolete Packages
 D - Purge Packages using deborphan
 C - apt Clean
@@ -41,19 +42,27 @@ Q - Exit"
 
 while true; do
     clear
-    echo "$menu"
+    if [ -z ${_DEBORPHAN} ]; then
+        echo 'INFO: deborphan package is not installed. Option "D" will not work properly.'
+    fi
+
+    if [ -z ${_APTITUDE} ]; then
+        echo 'INFO: aptitude package is not installed. Option "O" will not work properly.'
+    fi
+
+    echo -e "\n$menu"
     echo -n "Enter option: "
     read option
     case $option in
         1) sudo apt update ;;
         2) sudo apt upgrade -V ;;
-        3) sudo apt dist-upgrade ;;
+        3) sudo apt full-upgrade ;;
         l|L) apt list --upgradable 
             read -p "Press Enter to continue" ;;
         a|A) sudo apt autoremove --purge ;;
         o|O) sudo aptitude purge ~o ;;
-        d|D) sudo apt purge $(deborphan) ;; #deborphan package must be installed
-        c|C) sudo apt clean ;;
+        d|D) sudo apt purge ${_DEBORPHAN} ;;
+        c|C) sudo apt clean ;; # Clean localy downloaded packages
         v|V) ${_LESS} /var/log/apt/history.log ;;
         e|E) sources ;;
         h|H) help_ ;;
