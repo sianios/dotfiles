@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # A script to semi automate the packages update procedure and cleanup on Debian based
-# distributions using the **apt** package manager and other packages.
+# distributions using the apt package manager and other packages.
 # Version: 0.4
 
 sources() {

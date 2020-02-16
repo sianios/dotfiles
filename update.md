@@ -10,7 +10,7 @@ Version: 0.4
 
 Select an option from the menu provided in script. Both lowe and capital letters work.
 
-Options:
+**Options:**
 
 **1 - Update**
 Update the local repositories.
