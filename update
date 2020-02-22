@@ -17,7 +17,7 @@ sources_() {
 
     # edit-sources using default system editor
     sudo apt edit-sources $filename
-    #sudo apt update
+    sudo apt update
 }
 
 pkgs_check_() {
@@ -26,7 +26,6 @@ pkgs_check_() {
             echo -e "INFO: $pkg package is not installed."
         fi
     done
-    echo
 }
 
 help_() {
@@ -58,6 +57,7 @@ sudo_check_
 pkgs_check_
 
 while true; do
+    clear
     echo -e "${MENU}"
     echo -n "Enter option: "
     read option
