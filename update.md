@@ -4,8 +4,6 @@
 
 A script to semi automate the packages update procedure and cleanup on Debian based distributions using the **apt** package manager and other packages.
 
-Version: 0.4
-
 ## Usage
 
 Select an option from the menu provided in script. Both lowe and capital letters work.
@@ -56,3 +54,9 @@ Exits the script.
 - A better help on how to operate the script, something like a man page hosted on GitHub.com
 - Replaced Dist-upgrade with full-upgrade
 - A check for deborphan and aptitude package added
+
+### v0.5 - 22/3/2020
+- Packages check is done now inside function
+- Check if user has sudo access
+- Fix D option bug, not getting deborphan packages
+- Some functions and variables renamed

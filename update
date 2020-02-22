@@ -2,32 +2,42 @@
 
 # A script to semi automate the packages update procedure and cleanup on Debian based
 # distributions using the apt package manager and other packages.
-# Version: 0.4
+# Version: 0.5
 
-sources() {
+sudo_check_() {
+    sudo -v || exit 1
+}
+
+sources_() {
     clear
-    ls /etc/apt/sources.list.d
+    ls -l /etc/apt/sources.list.d/ | awk '{print $9}'
 
     echo -en "\nEnter file name to edit. If none selected sources.list will be edited.\nFile name: "
     read filename
 
     # edit-sources using default system editor
     sudo apt edit-sources $filename
-    sudo apt update
+    #sudo apt update
+}
+
+pkgs_check_() {
+    for pkg in "${_PKG[@]}"; do
+        if [ -z $(which $pkg) ]; then
+            echo -e "INFO: $pkg package is not installed."
+        fi
+    done
+    echo
 }
 
 help_() {
     # launch default browser to view help file on github
+    echo "VERSION: ${_VERSION}"
     sensible-browser https://github.com/sianios/dotfiles/blob/master/update.md &
 
     read -p "Press Enter to continue"
 }
 
-_LESS=$(which less)
-_DEBORPHAN=$(which deborphan)
-_APTITUDE=$(which aptitude)
-
-menu="1 - Update
+MENU="1 - Update
 2 - Upgrade
 3 - Full-Upgrade
 L - List Available Upgrades
@@ -40,17 +50,15 @@ E - Edit source.list files
 H - Info and help
 Q - Exit"
 
+_VERSION="0.5"
+_PKG=(sudo aptitude deborphan less)
+_LESS=$(which less)
+
+sudo_check_
+pkgs_check_
+
 while true; do
-    clear
-    if [ -z ${_DEBORPHAN} ]; then
-        echo 'INFO: deborphan package is not installed. Option "D" will not work properly.'
-    fi
-
-    if [ -z ${_APTITUDE} ]; then
-        echo 'INFO: aptitude package is not installed. Option "O" will not work properly.'
-    fi
-
-    echo -e "\n$menu"
+    echo -e "${MENU}"
     echo -n "Enter option: "
     read option
     case $option in
@@ -61,10 +69,10 @@ while true; do
             read -p "Press Enter to continue" ;;
         a|A) sudo apt autoremove --purge ;;
         o|O) sudo aptitude purge ~o ;;
-        d|D) sudo apt purge ${_DEBORPHAN} ;;
+        d|D) sudo apt purge $(deborphan) ;;
         c|C) sudo apt clean ;; # Clean localy downloaded packages
         v|V) ${_LESS} /var/log/apt/history.log ;;
-        e|E) sources ;;
+        e|E) sources_ ;;
         h|H) help_ ;;
         q|Q) exit 0 ;;
         ?*) echo "Error: $option option is not valid. Try again.."
