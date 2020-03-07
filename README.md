@@ -20,3 +20,4 @@ accordingly.**
 | do_dns.sh | update DigitalOcean DNS record (must be edited first with your details) |
 | eac | extract compressed files such as tar.gz, rar, zip etc. or compress files to *.tar.gz |
 | update | semi automate update and cleanup packages on Debian based distros |
+| git_setup | set of commands to setup some git configuration |
