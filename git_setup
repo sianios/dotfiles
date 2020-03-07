@@ -2,11 +2,15 @@
 
 # set of commands to setup git nothing special yet
 
-#need to provide username and e-mail
-_mail=""
+# need to provide username and e-mail otherwise will not be set
 _username=""
+_mail=""
 
-sudo -v || echo "User need root privileges."
+if [ ! $(sudo -v )]; then
+    exit 1
+fi
+
+#sudo -v || echo "User need root privileges."
 
 sudo apt update
 sudo apt install -y git
@@ -18,7 +22,10 @@ git config --global credential.helper cache
 git config --global credential.helper 'cache --timeout=36000'
 
 # Set username
-git config --global user.name "_username"
+git config --global user.name "${_username}"
+
+# Set email
+git config --global user.email "${_mail}"
 
 # Aliases
 git config --global alias.ph push
