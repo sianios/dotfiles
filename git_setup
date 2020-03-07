@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# set of commands to setup git nothing special yet
+
+sudo -v || exit 1
+
+if [ ${EUID} -ne 0 ]; then
+    echo "Run as root."
+    exit 1
+fi
+
+apt update
+apt install -y git
+
+# Set git to use credential memory cache
+git config --global credential.helper cache
+
+# Set cache timeout at 10 hours (time is in seconds)
+git config --global credential.helper 'cache --timeout=36000'
+
+# Set username
+git config --global user.name "sianios"
