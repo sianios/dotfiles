@@ -6,14 +6,15 @@
 _username=""
 _mail=""
 
+# Check if user have sudo privileges to continue running
 if [ ! $(sudo -v )]; then
     exit 1
+else
+    echo "User need root priviledges." || exit 1
 fi
 
-#sudo -v || echo "User need root privileges."
-
-sudo apt update
-sudo apt install -y git
+apt update
+apt install -y git
 
 # Set git to use credential memory cache
 git config --global credential.helper cache
