@@ -9,8 +9,6 @@ _edit="vim"
 
 # Check if user have sudo privileges to continue running
 if [ ! $(sudo -v )]; then
-    exit 1
-else
     echo "User need root priviledges." || exit 1
 fi
 
