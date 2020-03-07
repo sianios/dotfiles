@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# set of commands to setup git nothing special yet
+# set of commands to setup git, nothing special yet
 
 # need to provide username and e-mail otherwise will not be set
 _username=""
 _mail=""
+_edit="vim"
 
 # Check if user have sudo privileges to continue running
 if [ ! $(sudo -v )]; then
@@ -27,6 +28,9 @@ git config --global user.name "${_username}"
 
 # Set email
 git config --global user.email "${_mail}"
+
+# Editor
+git config --global core.editor "${_edit}"
 
 # Aliases
 git config --global alias.ph push
