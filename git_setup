@@ -2,15 +2,14 @@
 
 # set of commands to setup git nothing special yet
 
-sudo -v || exit 1
+#need to provide username and e-mail
+_mail=""
+_username=""
 
-if [ ${EUID} -ne 0 ]; then
-    echo "Run as root."
-    exit 1
-fi
+sudo -v || echo "User need root privileges."
 
-apt update
-apt install -y git
+sudo apt update
+sudo apt install -y git
 
 # Set git to use credential memory cache
 git config --global credential.helper cache
@@ -19,4 +18,11 @@ git config --global credential.helper cache
 git config --global credential.helper 'cache --timeout=36000'
 
 # Set username
-git config --global user.name "sianios"
+git config --global user.name "_username"
+
+# Aliases
+git config --global alias.ph push
+git config --global alias.co checkout
+git config --global alias.st status
+git config --global alias.a add
+git config --global alias.mm commit
