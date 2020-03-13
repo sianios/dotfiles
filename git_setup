@@ -2,8 +2,9 @@
 
 # set of commands to setup git, nothing special yet
 
-# need to provide username and e-mail otherwise will not be set
-_username=""
+# need to provide username and e-mail otherwise current user name will
+# be set
+_username="$LOGNAME"
 _mail=""
 _edit="vim"
 
