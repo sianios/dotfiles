@@ -2,7 +2,7 @@
 
 # A script to semi automate the packages update procedure and cleanup on Debian based
 # distributions using the apt package manager and other packages.
-# Version: 0.5
+# Version: 0.6
 
 sudo_check_() {
     sudo -v || exit 1
@@ -10,51 +10,63 @@ sudo_check_() {
 
 sources_() {
     clear
-    ls -l /etc/apt/sources.list.d/ | awk '{print $9}'
+    find /etc/apt/ -type f -iname *.list -printf "%f\n"
+    
+    read -p "Enter source list file to edit: " sourcelist
 
-    echo -en "\nEnter file name to edit. If none selected sources.list will be edited.\nFile name: "
-    read filename
+    if [ "$sourcelist" == "sources.list" ]; then
+        sourcelist=""
+    fi
 
     # edit-sources using default system editor
-    sudo apt edit-sources $filename
-    sudo apt update
+    sudo apt edit-sources $sourcelist
+    
+    read -p "Would you like to update the package repositories? [Y/n]: " answer
+    
+    if [ "$answer" == "y" ] || [ "$answer" == "Y" ] || [ "$answer" == "" ]; then
+        sudo apt update
+    fi
 }
 
-pkgs_check_() {
-    for pkg in "${_PKG[@]}"; do
-        if [ -z $(which $pkg) ]; then
-            echo -e "INFO: $pkg package is not installed."
-        fi
-    done
+# Check some packages and nofity user if installed
+pkgs_check() {
+    if [ ! -z $(which aptitude) ]; then
+        check_apti=""
+    else
+        check_apti="Not installed"
+    fi
+
+    if [ ! -z $(which deborphan) ]; then
+        check_debo=""
+    else
+        check_debo="Not installed"
+    fi
 }
 
+# View help now in terminal using curl
 help_() {
-    # launch default browser to view help file on github
-    echo "VERSION: ${_VERSION}"
-    sensible-browser https://github.com/sianios/dotfiles/blob/master/update.md &
-
-    read -p "Press Enter to continue"
+    curl -s https://raw.githubusercontent.com/sianios/dotfiles/master/update.md | less -N
 }
+
+pkgs_check
+
+_VERSION="0.6"
 
 MENU="1 - Update
 2 - Upgrade
 3 - Full-Upgrade
 L - List Available Upgrades
-A - Autoremove
-O - Remove Obsolete Packages
-D - Purge Packages using deborphan
+
 C - apt Clean
-V - apt history log
+A - Autoremove
+O - Remove Obsolete Packages using aptitude "$check_apti"
+D - Purge Packages using deborphan "$check_debo"
+
+V - View apt history log
 E - Edit source.list files
 H - Info and help
+
 Q - Exit"
-
-_VERSION="0.5"
-_PKG=(sudo aptitude deborphan less)
-_LESS=$(which less)
-
-sudo_check_
-pkgs_check_
 
 while true; do
     clear
@@ -71,7 +83,7 @@ while true; do
         o|O) sudo aptitude purge ~o ;;
         d|D) sudo apt purge $(deborphan) ;;
         c|C) sudo apt clean ;; # Clean localy downloaded packages
-        v|V) ${_LESS} /var/log/apt/history.log ;;
+        v|V) less -N /var/log/apt/history.log ;;
         e|E) sources_ ;;
         h|H) help_ ;;
         q|Q) exit 0 ;;
