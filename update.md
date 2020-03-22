@@ -3,11 +3,30 @@
 ## Description
 
 A script to semi automate the packages update procedure and cleanup on Debian based distributions.
+
 Using **apt** package manager and other packages such as **aptitude** and **deborphan**.
 
 ## Usage
+**Way 1:**
 
-Select an option from the menu provided in script. Both lowe and capital letters work.
+Executing the script a menu with all available options will assist you complete your tasks.
+```
+./update
+```
+**Way 2:**
+
+With v0.7 a second way to execute the script was implemented for faster results. Now the script can take arguments directly from the terminal.
+
+Example: Update repositories
+```
+./update 1
+```
+Example: List available packages upgrades
+```
+./update L
+```
+
+**Note:** Both lower and capital letters work.
 
 **Options:**
 
@@ -45,12 +64,17 @@ View the latest history log file.
 Select and edit sources .list files.
 
 **H - Info and help**
-Launches default web-browser to view this file on GitHub.
+Loads update.md file. Information and help for a better understanding of
+the script.
 
 **Q - Exit**
 Exits the script.
 
 ## Changelog
+
+### v0.7 - 22/3/2020
+- Read arguments directly from terminal and execute them
+- Removed unnecessary code lines
 
 ### v0.6 - 16/3/2020
 - Viewing now help in terminal

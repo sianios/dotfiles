@@ -2,7 +2,7 @@
 
 # A script to semi automate the packages update procedure and cleanup on Debian based
 # distributions using the apt package manager and other packages.
-# Version: 0.6
+_VERSION="0.7"
 
 sudo_check_() {
     sudo -v || exit 1
@@ -30,16 +30,12 @@ sources_() {
 
 # Check some packages and nofity user if installed
 pkgs_check() {
-    if [ ! -z $(which aptitude) ]; then
-        check_apti=""
-    else
-        check_apti="Not installed"
+    if [ -z $(which aptitude) ]; then
+        check_apti="(Not installed)"
     fi
 
-    if [ ! -z $(which deborphan) ]; then
-        check_debo=""
-    else
-        check_debo="Not installed"
+    if [ -z $(which deborphan) ]; then
+        check_debo="(Not installed)"
     fi
 }
 
@@ -50,8 +46,6 @@ help_() {
 
 pkgs_check
 
-_VERSION="0.6"
-
 MENU="1 - Update
 2 - Upgrade
 3 - Full-Upgrade
@@ -59,20 +53,30 @@ L - List Available Upgrades
 
 C - apt Clean
 A - Autoremove
-O - Remove Obsolete Packages using aptitude "$check_apti"
-D - Purge Packages using deborphan "$check_debo"
+O - Remove Obsolete Packages using aptitude \t"$check_apti"
+D - Purge Packages using deborphan \t\t"$check_debo"
 
 V - View apt history log
 E - Edit source.list files
 H - Info and help
 
-Q - Exit"
+Q - Exit
+"
 
 while true; do
-    clear
-    echo -e "${MENU}"
-    echo -n "Enter option: "
-    read option
+
+    if [ -z "$1" ]; then
+        clear
+        echo -e "${MENU}"
+        echo -n "Enter option: "
+        read option
+    elif [ -z "$done_" ]; then
+        done_=1
+        option=$1
+    else
+        exit 0
+    fi
+
     case $option in
         1) sudo apt update ;;
         2) sudo apt upgrade -V ;;
