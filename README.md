@@ -1,5 +1,9 @@
 Few of my scripts
 ------------------------
+## Update 29/03/20:
+update script will get its own personal repository. Right now a new
+version is in development with fixes, improvements and new features.
+
 Using the terminal sometimes can be painful. For example some simple
 tasks can waste your precious time if you don't remember the exact
 command or for just being lazy. To make your life easier you develop something
