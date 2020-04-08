@@ -31,4 +31,4 @@ git config --global alias.ck checkout
 git config --global alias.st status
 git config --global alias.a add
 git config --global alias.cm commit
-git config --global alias.alias --get-regexp alias
+git config --global alias.alias "config --get-regexp alias"
